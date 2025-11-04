@@ -1,45 +1,51 @@
-// Smooth scroll to sections with custom easing
+// Wait for page to load
 document.addEventListener("DOMContentLoaded", function () {
-  // Get all navigation links
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
+  // === SMOOTH SCROLLING ===
+  // Get all links that start with #
+  const navLinks = document.querySelectorAll('a[href^="#"]');
+
+  // When you click a link, scroll smoothly to that section
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
-      e.preventDefault();
-
+      e.preventDefault(); // Stop normal jump behavior
       const targetId = this.getAttribute("href");
       const targetSection = document.querySelector(targetId);
 
       if (targetSection) {
-        // Get the target position with offset for better visibility
-        const targetPosition =
-          targetSection.getBoundingClientRect().top + window.pageYOffset;
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 1200; // Duration in milliseconds (1.2 seconds)
-        let start = null;
-
-        // Easing function for smoother animation
-        function easeInOutCubic(t) {
-          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        // Animation function
-        function animation(currentTime) {
-          if (start === null) start = currentTime;
-          const timeElapsed = currentTime - start;
-          const progress = Math.min(timeElapsed / duration, 1);
-          const ease = easeInOutCubic(progress);
-
-          window.scrollTo(0, startPosition + distance * ease);
-
-          if (timeElapsed < duration) {
-            requestAnimationFrame(animation);
-          }
-        }
-
-        requestAnimationFrame(animation);
+        targetSection.scrollIntoView({ behavior: "smooth" });
       }
+    });
+  });
+
+  // === MOBILE MENU ===
+  // Get the menu elements
+  const menuButton = document.getElementById("mobile-menu-button");
+  const menu = document.getElementById("mobile-menu");
+  const closeButton = document.getElementById("mobile-menu-close");
+  const menuLinks = document.querySelectorAll(".mobile-menu-link");
+
+  // Open menu when clicking hamburger button
+  menuButton.addEventListener("click", function () {
+    menu.classList.remove("hidden");
+  });
+
+  // Close menu when clicking X button
+  closeButton.addEventListener("click", function () {
+    menu.classList.add("hidden");
+  });
+
+  // Close menu when clicking outside
+  menu.addEventListener("click", function (e) {
+    if (e.target === menu) {
+      menu.classList.add("hidden");
+    }
+  });
+
+  // Close menu when clicking any menu link
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      menu.classList.add("hidden");
     });
   });
 });
