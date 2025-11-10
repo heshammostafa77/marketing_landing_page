@@ -35,24 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
     menu.classList.add("hidden");
   });
 
-  // Close menu when clicking on the dark background
-  menu.addEventListener("click", function (e) {
-    if (e.target === menu) {
-      menu.classList.add("hidden");
-    }
-  });
-
   // Close menu when clicking any menu link
   menuLinks.forEach((link) => {
     link.addEventListener("click", function () {
       menu.classList.add("hidden");
     });
-  });
-
-  // Close menu when user scrolls
-  window.addEventListener("scroll", function () {
-    if (!menu.classList.contains("hidden")) {
-      menu.classList.add("hidden");
-    }
   });
 });
